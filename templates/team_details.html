@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Team Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-align: center;
+        }
+        .card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 20px;
+        }
+        p, ul {
+            margin: 0;
+            padding: 0;
+            font-size: 1.2em;
+        }
+        ul {
+            list-style: none;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Selected Team</h1>
+    <div class="card">
+        <h2>Best Score:</h2>
+        <p>{{ best_score }}</p>
+    </div>
+    <div class="card">
+        <h2>Best Configuration:</h2>
+        <p>{{ best_configuration }}</p>
+    </div>
+    <div class="card">
+        <h2>Best Team:</h2>
+        <ul>
+            {% for role, players in best_team.items() %}
+                <li><strong>{{ role }}:</strong> {{ players }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

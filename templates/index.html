@@ -1,0 +1,801 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fantasy Cricket Team Selector</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMt23cez/3paNdF+XNmE+Z40/7xjWmD7f8zD4vK" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(45deg, #6db1bf, #7e8ace);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        nav {
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 80%;
+            margin: 0 auto;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        h1, h2 {
+            text-shadow: 1px 1px 2px #000;
+        }
+        .container {
+            padding-top: 80px;
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin: 20px 0;
+            width: 100%;
+            max-width: 500px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+        }
+        .footer {
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+        }
+        #loading {
+            display: none;
+            font-size: 1.2em;
+            color: #555;
+        }
+        button {
+            padding: 12px 20px;
+            background: #007bff;
+            border: none;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        button:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <h1><i class="fas fa-cricket"></i> Fantasy Cricket Team Selector</h1>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="card">
+            <form id="teamForm">
+                <label for="team1">Team 1:</label>
+                <input type="text" id="team1" name="team1" required placeholder="Enter first team name">
+                <label for="team2">Team 2:</label>
+                <input type="text" id="team2" name="team2" required placeholder="Enter second team name">
+                <button type="submit"><i class="fas fa-search"></i> Get Team</button>
+            </form>
+        </div>
+        <div id="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+        <h2>Selected Team</h2>
+        <div id="result"></div>
+    </div>
+    <div class="footer">
+        <p>&copy; 2024 Fantasy Cricket. All rights reserved.</p>
+    </div>
+    <script>
+        document.getElementById('teamForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').innerHTML = '';
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loading').style.display = 'none';
+                if (data.best_team) {
+                    let resultHtml = `<div class="card"><h2>Best Score:</h2><p>${data.best_score}</p></div>`;
+                    resultHtml += `<div class="card"><h2>Best Configuration:</h2><p>${data.best_configuration.join(', ')}</p></div>`;
+                    resultHtml += '<div class="card"><h2>Best Team:</h2><ul class="team-list">';
+                    for (const role in data.best_team) {
+                        if (role !== 'Total' && role !== 'Average_Fantasy_Points') {
+                            resultHtml += `<li><strong>${role}:</strong> ${data.best_team[role].join(', ')}</li>`;
+                        }
+                    }
+                    resultHtml += '</ul></div>';
+                    document.getElementById('result').innerHTML = resultHtml;
+                } else {
+                    document.getElementById('result').innerHTML = '<div class="card"><p>Error in fetching the team. Please try again.</p></div>';
+                }
+            })
+            .catch(error => {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('result').innerHTML = '<div class="card"><p>An error occurred. Please try again.</p></div>';
+            });
+        });
+    </script>
+</body>
+</html>
+ -->
+<!-- 
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <title>Fantasy Cricket Team Selector</title>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="anonymous">
+     <style>
+         body {
+             font-family: 'Roboto', sans-serif;
+             margin: 0;
+             padding: 0;
+             background: linear-gradient(45deg, #6db1bf, #7e8ace);
+             color: #333;
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+             justify-content: center;
+             min-height: 100vh;
+         }
+         nav {
+             width: 100%;
+             background-color: #333;
+             color: #fff;
+             padding: 10px 0;
+             position: fixed;
+             top: 0;
+             z-index: 1000;
+         }
+         .nav-container {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             width: 80%;
+             margin: 0 auto;
+         }
+         .nav-links {
+             list-style: none;
+             display: flex;
+             gap: 20px;
+         }
+         .nav-links a {
+             color: #fff;
+             text-decoration: none;
+             font-weight: bold;
+         }
+         h1, h2 {
+             text-shadow: 1px 1px 2px #000;
+         }
+         .container {
+             padding-top: 100px;
+             width: 80%;
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+             justify-content: center;
+         }
+         .card {
+             background: #fff;
+             padding: 20px;
+             border-radius: 10px;
+             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+             margin: 20px 0;
+             width: 100%;
+             max-width: 500px;
+             transition: transform 0.3s ease-in-out;
+         }
+         .card:hover {
+             transform: translateY(-10px);
+         }
+         .footer {
+             width: 100%;
+             background-color: #333;
+             color: #fff;
+             text-align: center;
+             padding: 10px;
+             position: fixed;
+             bottom: 0;
+             left: 0;
+         }
+         #loading {
+             display: none;
+             font-size: 1.2em;
+             color: #555;
+         }
+         button {
+             padding: 12px 20px;
+             background: #007bff;
+             border: none;
+             color: #fff;
+             border-radius: 5px;
+             cursor: pointer;
+             font-size: 1em;
+             margin-top: 10px;
+             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+             transition: background 0.3s ease, transform 0.2s ease;
+         }
+         button:hover {
+             background: #0056b3;
+             transform: scale(1.05);
+         }
+         .result-container {
+             display: flex;
+             align-items: flex-start;
+             justify-content: space-between;
+             width: 100%;
+             max-width: 1200px;
+             margin-top: 20px;
+         }
+         .result-content {
+             flex: 1;
+             margin-right: 20px;
+         }
+         .team-visual {
+             position: relative;
+             width: 100%;
+             max-width: 600px;
+             display: none;
+         }
+         .team-visual img {
+             width: 100%;
+             border-radius: 10px;
+             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+         }
+         .player-name {
+             position: absolute;
+             color: #fff;
+             font-weight: bold;
+             text-shadow: 1px 1px 2px #000;
+             display: flex;
+             align-items: center;
+         }
+         .player-name img {
+             width: 20px;
+             height: 20px;
+             margin-right: 5px;
+         }
+         .captain {
+             background-color: #ffd700;
+             padding: 2px 5px;
+             border-radius: 5px;
+         }
+         .vice-captain {
+             background-color: #c0c0c0;
+             padding: 2px 5px;
+             border-radius: 5px;
+         }
+         .success-message, .error-message {
+             display: none;
+             padding: 10px;
+             border-radius: 5px;
+             margin-top: 10px;
+             width: 100%;
+             max-width: 500px;
+             text-align: center;
+         }
+         .success-message {
+             background: #28a745;
+             color: #fff;
+         }
+         .error-message {
+             background: #dc3545;
+             color: #fff;
+         }
+         @media (max-width: 768px) {
+             .result-container {
+                 flex-direction: column;
+                 align-items: center;
+             }
+             .container {
+                 width: 90%;
+             }
+             .card {
+                 width: 90%;
+             }
+             .result-content {
+                 margin-right: 0;
+                 margin-bottom: 20px;
+             }
+         }
+     </style>
+ </head>
+ <body>
+     <nav>
+         <div class="nav-container">
+             <h1><i class="fas fa-cricket"></i> Fantasy Cricket Team Selector</h1>
+             <ul class="nav-links">
+                 <li><a href="/">Home</a></li>
+                 <li><a href="/about">About</a></li>
+                 <li><a href="/contact">Contact</a></li>
+             </ul>
+         </div>
+     </nav>
+     <div class="container">
+         <div class="card">
+             <form id="teamForm">
+                 <label for="team1">Team 1:</label>
+                 <input type="text" id="team1" name="team1" required placeholder="Enter first team name">
+                 <label for="team2">Team 2:</label>
+                 <input type="text" id="team2" name="team2" required placeholder="Enter second team name">
+                 <button type="submit"><i class="fas fa-search"></i> Get Team</button>
+             </form>
+         </div>
+         <div id="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+         <div class="success-message" id="successMessage">Team successfully generated!</div>
+         <div class="error-message" id="errorMessage">An error occurred. Please try again.</div>
+         <div class="result-container">
+             <div id="result" class="result-content"></div>
+             <div class="team-visual">
+                 <img src="{{ url_for('static', filename='ground.jpeg') }}" alt="Team Visualization">
+             </div>
+         </div>
+     </div>
+     <div class="footer">
+         <p>&copy; 2024 Fantasy Cricket. All rights reserved.</p>
+     </div>
+     <script>
+         document.getElementById('teamForm').addEventListener('submit', function(event) {
+             event.preventDefault();
+             const formData = new FormData(event.target);
+             document.getElementById('loading').style.display = 'block';
+             document.getElementById('result').innerHTML = '';
+             document.querySelector('.team-visual').style.display = 'none'; // Hide the image initially
+             document.getElementById('successMessage').style.display = 'none';
+             document.getElementById('errorMessage').style.display = 'none';
+ 
+             fetch('/predict', {
+                 method: 'POST',
+                 body: formData
+             })
+             .then(response => response.json())
+             .then(data => {
+                 document.getElementById('loading').style.display = 'none';
+                 if (data.best_team) {
+                     let resultHtml = `<div class="card"><h2>Best Score:</h2><p>${data.best_score}</p></div>`;
+                     resultHtml += `<div class="card"><h2>Best Configuration:</h2><p>${data.best_configuration.join(', ')}</p></div>`;
+                     resultHtml += `<div class="card"><h2>Captain:</h2><p>${data.captain}</p></div>`;
+                     resultHtml += `<div class="card"><h2>Vice-Captain:</h2><p>${data.vice_captain}</p></div>`;
+                     resultHtml += '<div class="card"><h2>Best Team:</h2><ul class="team-list">';
+                     for (const role in data.best_team) {
+                         if (role !== 'Total' && role !== 'Average_Fantasy_Points') {
+                             resultHtml += `<li><strong>${role}:</strong> ${data.best_team[role].join(', ')}</li>`;
+                         }
+                     }
+                     resultHtml += '</ul></div>';
+                     document.getElementById('result').innerHTML = resultHtml;
+ 
+                     const roleCounts = {
+                         WK: data.best_team.WK ? data.best_team.WK.length : 0,
+                         BAT: data.best_team.BAT ? data.best_team.BAT.length : 0,
+                         AR: data.best_team.AR ? data.best_team.AR.length : 0,
+                         BOWL: data.best_team.BOWL ? data.best_team.BOWL.length : 0,
+                     };
+ 
+                     const positions = {
+                         WK: [],
+                         BAT: [],
+                         AR: [],
+                         BOWL: [],
+                     };
+ 
+                     const calculatePositions = (role, count, region) => {
+                         const regions = {
+                             WK: [{top: '10%', left: '45%'}],
+                             BAT: [{top: '20%', left: '20%'}, {top: '20%', left: '70%'}, {top: '30%', left: '30%'}, {top: '30%', left: '60%'}],
+                             AR: [{top: '40%', left: '20%'}, {top: '40%', left: '70%'}, {top: '50%', left: '30%'}, {top: '50%', left: '60%'}],
+                             BOWL: [{top: '60%', left: '20%'}, {top: '60%', left: '70%'}, {top: '70%', left: '30%'}, {top: '70%', left: '60%'}, {top: '80%', left: '45%'}]
+                         };
+                         for (let i = 0; i < count; i++) {
+                             positions[role].push(regions[role][i]);
+                         }
+                     };
+ 
+                     calculatePositions('WK', roleCounts.WK, 'WK');
+                     calculatePositions('BAT', roleCounts.BAT, 'BAT');
+                     calculatePositions('AR', roleCounts.AR, 'AR');
+                     calculatePositions('BOWL', roleCounts.BOWL, 'BOWL');
+ 
+                     const captain = data.captain;
+                     const viceCaptain = data.vice_captain;
+ 
+                     ['WK', 'BAT', 'AR', 'BOWL'].forEach(role => {
+                         data.best_team[role].forEach((player, index) => {
+                             const playerDiv = document.createElement('div');
+                             playerDiv.className = 'player-name';
+                             playerDiv.style.top = positions[role][index].top;
+                             playerDiv.style.left = positions[role][index].left;
+                             let playerLabel = player;
+                             if (player === captain) {
+                                 playerDiv.classList.add('captain');
+                                 playerLabel += ' (C)';
+                             } else if (player === viceCaptain) {
+                                 playerDiv.classList.add('vice-captain');
+                                 playerLabel += ' (VC)';
+                             }
+                             playerDiv.innerHTML = `<img src="{{ url_for('static', filename='player_icon.png') }}" alt="Player"> ${playerLabel}`;
+                             document.querySelector('.team-visual').appendChild(playerDiv);
+                         });
+                     });
+ 
+                     document.querySelector('.team-visual').style.display = 'block'; // Show the image
+                     document.getElementById('successMessage').style.display = 'block'; // Show success message
+                 } else {
+                     document.getElementById('result').innerHTML = '<div class="card"><p>Error in fetching the team. Please try again.</p></div>';
+                     document.getElementById('errorMessage').style.display = 'block'; // Show error message
+                 }
+             })
+             .catch(error => {
+                 document.getElementById('loading').style.display = 'none';
+                 document.getElementById('result').innerHTML = '<div class="card"><p>An error occurred. Please try again.</p></div>';
+                 document.getElementById('errorMessage').style.display = 'block'; // Show error message
+             });
+         });
+     </script>
+ </body>
+ </html>
+  -->
+
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title>Fantasy Cricket Team Selector</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+      <style>
+          body {
+              font-family: 'Roboto', sans-serif;
+              margin: 0;
+              padding: 0;
+              background: linear-gradient(45deg, #6db1bf, #7e8ace);
+              color: #333;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              min-height: 100vh;
+          }
+          nav {
+              width: 100%;
+              background-color: #333;
+              color: #fff;
+              padding: 10px 0;
+              position: fixed;
+              top: 0;
+              z-index: 1000;
+          }
+          .nav-container {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              width: 80%;
+              margin: 0 auto;
+          }
+          .nav-links {
+              list-style: none;
+              display: flex;
+              gap: 20px;
+          }
+          .nav-links a {
+              color: #fff;
+              text-decoration: none;
+              font-weight: bold;
+          }
+          h1, h2 {
+              text-shadow: 1px 1px 2px #000;
+          }
+          .container {
+              padding-top: 100px;
+              width: 80%;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+          }
+          .card {
+              background: #fff;
+              padding: 20px;
+              border-radius: 10px;
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+              margin: 20px 0;
+              width: 100%;
+              max-width: 500px;
+              transition: transform 0.3s ease-in-out;
+          }
+          .card:hover {
+              transform: translateY(-10px);
+          }
+          .footer {
+              width: 100%;
+              background-color: #333;
+              color: #fff;
+              text-align: center;
+              padding: 10px;
+              position: fixed;
+              bottom: 0;
+              left: 0;
+          }
+          #loading {
+              display: none;
+              font-size: 1.2em;
+              color: #555;
+          }
+          button {
+              padding: 12px 20px;
+              background: #007bff;
+              border: none;
+              color: #fff;
+              border-radius: 5px;
+              cursor: pointer;
+              font-size: 1em;
+              margin-top: 10px;
+              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+              transition: background 0.3s ease, transform 0.2s ease;
+          }
+          button:hover {
+              background: #0056b3;
+              transform: scale(1.05);
+          }
+          .result-container {
+              display: flex;
+              align-items: flex-start;
+              justify-content: space-between;
+              width: 100%;
+              max-width: 1200px;
+              margin-top: 20px;
+          }
+          .result-content {
+              flex: 1;
+              margin-right: 20px;
+          }
+          .team-visual {
+              position: relative;
+              width: 100%;
+              max-width: 600px;
+              display: none;
+          }
+          .team-visual img {
+              width: 100%;
+              border-radius: 10px;
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+          }
+          .player-name {
+              position: absolute;
+              color: #fff;
+              font-weight: bold;
+              text-shadow: 1px 1px 2px #000;
+              display: flex;
+              align-items: center;
+          }
+          .player-name img {
+              width: 20px;
+              height: 20px;
+              margin-right: 5px;
+          }
+          .captain {
+              background-color: #ffd700;
+              padding: 2px 5px;
+              border-radius: 5px;
+          }
+          .vice-captain {
+              background-color: #c0c0c0;
+              padding: 2px 5px;
+              border-radius: 5px;
+          }
+          .success-message, .error-message {
+              display: none;
+              padding: 10px;
+              border-radius: 5px;
+              margin-top: 10px;
+              width: 100%;
+              max-width: 500px;
+              text-align: center;
+          }
+          .success-message {
+              background: #28a745;
+              color: #fff;
+          }
+          .error-message {
+              background: #dc3545;
+              color: #fff;
+          }
+          @media (max-width: 768px) {
+              .result-container {
+                  flex-direction: column;
+                  align-items: center;
+              }
+              .container {
+                  width: 90%;
+              }
+              .card {
+                  width: 90%;
+              }
+              .result-content {
+                  margin-right: 0;
+                  margin-bottom: 20px;
+              }
+          }
+      </style>
+  </head>
+  <body>
+      <nav>
+          <div class="nav-container">
+              <h1><i class="fas fa-cricket"></i> Fantasy Cricket Team Selector</h1>
+              <ul class="nav-links">
+                  <li><a href="/">Home</a></li>
+                  <li><a href="/about">About</a></li>
+                  <li><a href="/contact">Contact</a></li>
+              </ul>
+          </div>
+      </nav>
+      <div class="container">
+          <div class="card">
+              <form id="teamForm">
+                  <label for="team1">Team 1:</label>
+                  <input type="text" id="team1" name="team1" required placeholder="Enter first team name">
+                  <label for="team2">Team 2:</label>
+                  <input type="text" id="team2" name="team2" required placeholder="Enter second team name">
+                  <button type="submit"><i class="fas fa-search"></i> Get Team</button>
+              </form>
+          </div>
+          <div id="loading"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+          <div class="success-message" id="successMessage">Team successfully generated!</div>
+          <div class="error-message" id="errorMessage">An error occurred. Please try again.</div>
+          <div class="result-container">
+              <div id="result" class="result-content"></div>
+              <div class="team-visual">
+                  <img src="{{ url_for('static', filename='ground2.png') }}" alt="Team Visualization">
+              </div>
+          </div>
+      </div>
+      <!-- <div class="footer">
+          <p>&copy; 2024 Fantasy Cricket. All rights reserved.</p>
+      </div> -->
+      <script>
+          document.getElementById('teamForm').addEventListener('submit', function(event) {
+              event.preventDefault();
+              const formData = new FormData(event.target);
+              document.getElementById('loading').style.display = 'block';
+              document.getElementById('result').innerHTML = '';
+              document.querySelector('.team-visual').style.display = 'none'; // Hide the image initially
+              document.getElementById('successMessage').style.display = 'none';
+              document.getElementById('errorMessage').style.display = 'none';
+  
+              fetch('/predict', {
+                  method: 'POST',
+                  body: formData
+              })
+              .then(response => response.json())
+              .then(data => {
+                  document.getElementById('loading').style.display = 'none';
+                  if (data.best_team) {
+                      let resultHtml = `<div class="card"><h2>Best Score:</h2><p>${data.best_score}</p></div>`;
+                      resultHtml += `<div class="card"><h2>Best Configuration:</h2><p>${data.best_configuration.join(', ')}</p></div>`;
+                      resultHtml += `<div class="card"><h2>Captain:</h2><p>${data.captain}</p></div>`;
+                      resultHtml += `<div class="card"><h2>Vice-Captain:</h2><p>${data.vice_captain}</p></div>`;
+                      resultHtml += '<div class="card"><h2>Best Team:</h2><ul class="team-list">';
+                      for (const role in data.best_team) {
+                          if (role !== 'Total' && role !== 'Average_Fantasy_Points') {
+                              resultHtml += `<li><strong>${role}:</strong> ${data.best_team[role].join(', ')}</li>`;
+                          }
+                      }
+                      resultHtml += '</ul></div>';
+                      document.getElementById('result').innerHTML = resultHtml;
+  
+                      const roleCounts = {
+                          WK: data.best_team.WK ? data.best_team.WK.length : 0,
+                          BAT: data.best_team.BAT ? data.best_team.BAT.length : 0,
+                          AR: data.best_team.AR ? data.best_team.AR.length : 0,
+                          BOWL: data.best_team.BOWL ? data.best_team.BOWL.length : 0,
+                      };
+  
+                      const positions = {
+                          WK: [],
+                          BAT: [],
+                          AR: [],
+                          BOWL: [],
+                      };
+  
+                      const calculatePositions = (role, count, region) => {
+                          const regions = {
+                              WK: [{top: '10%', left: '45%'}],
+                              BAT: [{top: '20%', left: '20%'}, {top: '20%', left: '70%'}, {top: '30%', left: '30%'}, {top: '30%', left: '60%'}],
+                              AR: [{top: '40%', left: '20%'}, {top: '40%', left: '70%'}, {top: '50%', left: '30%'}, {top: '50%', left: '60%'}],
+                              BOWL: [{top: '60%', left: '20%'}, {top: '60%', left: '70%'}, {top: '70%', left: '30%'}, {top: '70%', left: '60%'}, {top: '80%', left: '45%'}]
+                          };
+                          for (let i = 0; i < count; i++) {
+                              positions[role].push(regions[role][i]);
+                          }
+                      };
+  
+                      calculatePositions('WK', roleCounts.WK, 'WK');
+                      calculatePositions('BAT', roleCounts.BAT, 'BAT');
+                      calculatePositions('AR', roleCounts.AR, 'AR');
+                      calculatePositions('BOWL', roleCounts.BOWL, 'BOWL');
+  
+                      const captain = data.captain;
+                      const viceCaptain = data.vice_captain;
+  
+                      ['WK', 'BAT', 'AR', 'BOWL'].forEach(role => {
+                          data.best_team[role].forEach((player, index) => {
+                              const playerDiv = document.createElement('div');
+                              playerDiv.className = 'player-name';
+                              playerDiv.style.top = positions[role][index].top;
+                              playerDiv.style.left = positions[role][index].left;
+                              let playerLabel = player;
+                              if (player === captain) {
+                                  playerDiv.classList.add('captain');
+                                  playerLabel += ' (C)';
+                              } else if (player === viceCaptain) {
+                                  playerDiv.classList.add('vice-captain');
+                                  playerLabel += ' (VC)';
+                              }
+                              playerDiv.innerHTML = `<img src="{{ url_for('static', filename='player_icon.png') }}" alt="Player"> ${playerLabel}`;
+                              document.querySelector('.team-visual').appendChild(playerDiv);
+                          });
+                      });
+  
+                      document.querySelector('.team-visual').style.display = 'block'; // Show the image
+                      document.getElementById('successMessage').style.display = 'block'; // Show success message
+                  } else {
+                      document.getElementById('result').innerHTML = '<div class="card"><p>Error in fetching the team. Please try again.</p></div>';
+                      document.getElementById('errorMessage').style.display = 'block'; // Show error message
+                  }
+              })
+              .catch(error => {
+                  document.getElementById('loading').style.display = 'none';
+                  document.getElementById('result').innerHTML = '<div class="card"><p>An error occurred. Please try again.</p></div>';
+                  document.getElementById('errorMessage').style.display = 'block'; // Show error message
+              });
+          });
+      </script>
+  </body>
+  </html>
+  
